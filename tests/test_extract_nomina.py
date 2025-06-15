@@ -66,6 +66,10 @@ def test_number_conversion_handles_comma_decimal():
     assert en.parse_number('2.173,52') == 2173.52
 
 
+def test_parse_number_returns_none_for_invalid():
+    assert en.parse_number('invalid') is None
+
+
 def test_downloads_path_exists(monkeypatch):
     monkeypatch.delenv('USERPROFILE', raising=False)
     path = en.detect_downloads()

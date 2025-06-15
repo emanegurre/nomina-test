@@ -12,18 +12,28 @@ from typing import List, Optional
 import pandas as pd
 import pdfplumber
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(message)s")
 
 NUMBER_RE = re.compile(r"[\d\.]*,\d{2}")
 
 
 def parse_number(value: str) -> Optional[float]:
-    """Convert a Spanish-formatted number to float.
+    """Convert a Spanish-formatted number to ``float``.
 
-    Dashes or empty values return ``None``.
+    Parameters
+    ----------
+    value:
+        String containing the number, e.g. ``"2.173,52"``.
+
+    Returns
+    -------
+    Optional[float]
+        The parsed float or ``None`` if the value is empty or invalid.
     """
     value = value.strip()
     if not value or value in {"—", "-"}:
+        return None
+    if not NUMBER_RE.fullmatch(value):
         return None
     value = value.replace(".", "").replace(",", ".")
     try:
